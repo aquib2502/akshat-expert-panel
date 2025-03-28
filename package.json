@@ -12,6 +12,8 @@
     "@heroicons/react": "^1.0.6",
     "axios": "^1.8.4",
     "file-system": "^2.2.2",
+    "framer-motion": "^12.6.2",
+    "lucide-react": "^0.485.0",
     "next": "15.2.3",
     "nodemailer": "^6.10.0",
     "react": "^19.0.0",
