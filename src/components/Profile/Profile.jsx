@@ -17,7 +17,9 @@ import {
   Briefcase,
   UserCircle,
   Upload,
-  X
+  X,
+  Mail,
+  Hash
 } from "lucide-react";
 
 export default function Profile() {
@@ -362,6 +364,318 @@ export default function Profile() {
               )}
             </div>
           )}
+
+     
+     
+      {activeTab === "pendingAppointments" && (
+        <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-8 border border-white/20">
+          <h1 className="text-3xl font-bold text-white mb-8">
+            Pending Appointments
+          </h1>
+          
+          {loadingAppointments ? (
+            <div className="flex items-center justify-center py-8">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-400"></div>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {appointments.length === 0 ? (
+                <div className="text-center py-8 text-emerald-400/80">
+                  No pending appointments found
+                </div>
+              ) : (
+                appointments.map((appointment) => (
+                  <motion.div
+                    key={appointment._id}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="bg-white/5 border border-white/10 rounded-xl p-6 space-y-4"
+                  >
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div className="flex items-center gap-3">
+                        <Calendar className="w-5 h-5 text-emerald-400" />
+                        <div>
+                          <p className="text-sm text-emerald-400/80">Date</p>
+                          <p className="font-medium text-white">
+                            {new Date(appointment.date).toLocaleDateString()}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-3">
+                        <Clock className="w-5 h-5 text-emerald-400" />
+                        <div>
+                          <p className="text-sm text-emerald-400/80">Time</p>
+                          <p className="font-medium text-white">{appointment.time}</p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-3">
+                        <CheckCircle className="w-5 h-5 text-emerald-400" />
+                        <div>
+                          <p className="text-sm text-emerald-400/80">Status</p>
+                          <p className="font-medium text-white">{appointment.status}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex gap-4 pt-4">
+                      <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => handleAppointmentAction(appointment._id, "confirmed")}
+                        className="flex-1 bg-emerald-400/20 hover:bg-emerald-400/30 text-emerald-400 py-3 rounded-xl font-semibold transition-all flex items-center justify-center gap-2"
+                      >
+                        <CheckCircle className="w-5 h-5" />
+                        Confirm
+                      </motion.button>
+
+                      <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => handleAppointmentAction(appointment._id, "rejected")}
+                        className="flex-1 bg-red-400/20 hover:bg-red-400/30 text-red-400 py-3 rounded-xl font-semibold transition-all flex items-center justify-center gap-2"
+                      >
+                        <X className="w-5 h-5" />
+                        Reject
+                      </motion.button>
+                    </div>
+                  </motion.div>
+                ))
+              )}
+            </div>
+          )}
+        </div>
+        )}
+
+
+        {/* Confirmed Appointments */}
+{activeTab === "confirmedAppointments" && (
+  <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-8 border border-white/20">
+    <h1 className="text-3xl font-bold text-white mb-8">
+      Confirmed Appointments
+    </h1>
+    
+    {loadingAppointments ? (
+      <div className="flex items-center justify-center py-8">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-400"></div>
+      </div>
+    ) : (
+      <div className="space-y-4">
+        {confirmedAppointments.length === 0 ? (
+          <div className="text-center py-8 text-emerald-400/80">
+            No confirmed appointments found
+          </div>
+        ) : (
+          confirmedAppointments.map((appointment) => (
+            <motion.div
+              key={appointment._id}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-white/5 border border-white/10 rounded-xl p-6"
+            >
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="flex items-center gap-3">
+                  <Calendar className="w-5 h-5 text-emerald-400" />
+                  <div>
+                    <p className="text-sm text-emerald-400/80">Date</p>
+                    <p className="font-medium text-white">
+                      {new Date(appointment.date).toLocaleDateString()}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <Clock className="w-5 h-5 text-emerald-400" />
+                  <div>
+                    <p className="text-sm text-emerald-400/80">Time</p>
+                    <p className="font-medium text-white">{appointment.time}</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <CheckCircle className="w-5 h-5 text-emerald-400" />
+                  <div>
+                    <p className="text-sm text-emerald-400/80">Status</p>
+                    <p className="font-medium text-white">{appointment.status}</p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          ))
+        )}
+      </div>
+    )}
+  </div>
+)}
+
+{/* Summary */}
+{activeTab === "summary" && (
+  <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-8 border border-white/20">
+    <h1 className="text-3xl font-bold text-white mb-8">
+      Summary Reports
+    </h1>
+    
+    {summaries.length === 0 ? (
+      <div className="text-center py-8 text-emerald-400/80">
+        No summaries available
+      </div>
+    ) : (
+      <div className="space-y-6">
+        {summaries.map((summary, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-white/5 border border-white/10 rounded-xl p-6 space-y-4"
+          >
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div className="flex items-center gap-3">
+                <Hash className="w-5 h-5 text-emerald-400" />
+                <div>
+                  <p className="text-sm text-emerald-400/80">Appointment ID</p>
+                  <p className="font-medium text-white">{summary.appointmentId}</p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <Calendar className="w-5 h-5 text-emerald-400" />
+                <div>
+                  <p className="text-sm text-emerald-400/80">Created At</p>
+                  <p className="font-medium text-white">
+                    {new Date(summary.createdAt).toLocaleDateString()}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white/5 rounded-xl p-4">
+              <ol className="space-y-3">
+                {(() => {
+                  try {
+                    const parsed = JSON.parse(summary.summary);
+                    const parts = parsed.parts?.[0]?.text?.split('. ') || [];
+                    return parts.map((line, idx) => (
+                      <motion.li
+                        key={idx}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: idx * 0.1 }}
+                        className="text-white/90 flex gap-3"
+                      >
+                        <span className="text-emerald-400">{idx + 1}.</span>
+                        <span
+                          dangerouslySetInnerHTML={{
+                            __html: line.replace(
+                              /\*\*(.*?)\*\*/g,
+                              '<span class="text-emerald-400 font-semibold">$1</span>'
+                            ) + (idx !== parts.length - 1 ? '.' : '')
+                          }}
+                        />
+                      </motion.li>
+                    ));
+                  } catch (e) {
+                    console.error("Summary Parse Error:", e);
+                    return (
+                      <div className="text-red-400 text-center py-4">
+                        Summary is not available
+                      </div>
+                    );
+                  }
+                })()}
+              </ol>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    )}
+  </div>
+)}
+
+
+
+    {activeTab === "feedback" && (
+      <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-8 border border-white/20">
+        <h1 className="text-3xl font-bold text-white mb-8">
+          Feedback Report
+        </h1>
+        
+        {loadingAppointments ? (
+          <div className="flex items-center justify-center py-8">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-400"></div>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {confirmedAppointments.length === 0 ? (
+              <div className="text-center py-8 text-emerald-400/80">
+                No confirmed appointments found
+              </div>
+            ) : (
+              confirmedAppointments.map((appointment) => (
+                <motion.div
+                  key={appointment._id}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="bg-white/5 border border-white/10 rounded-xl p-6 space-y-4"
+                >
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="flex items-center gap-3">
+                      <Hash className="w-5 h-5 text-emerald-400" />
+                      <div>
+                        <p className="text-sm text-emerald-400/80">Appointment ID</p>
+                        <p className="font-medium text-white">{appointment._id}</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                      <Calendar className="w-5 h-5 text-emerald-400" />
+                      <div>
+                        <p className="text-sm text-emerald-400/80">Date</p>
+                        <p className="font-medium text-white">
+                          {new Date(appointment.date).toLocaleDateString()}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                      <Clock className="w-5 h-5 text-emerald-400" />
+                      <div>
+                        <p className="text-sm text-emerald-400/80">Time</p>
+                        <p className="font-medium text-white">{appointment.time}</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                      <CheckCircle className="w-5 h-5 text-emerald-400" />
+                      <div>
+                        <p className="text-sm text-emerald-400/80">Status</p>
+                        <p className="font-medium text-white">{appointment.status}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {appointment.status !== "report sent" && (
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => handleFillFeedback(appointment._id)}
+                      className="w-full mt-4 bg-emerald-400/20 hover:bg-emerald-400/30 text-emerald-400 py-3 rounded-xl font-semibold transition-all flex items-center justify-center gap-2"
+                    >
+                      <FileText className="w-5 h-5" />
+                      Fill Feedback
+                    </motion.button>
+                  )}
+                </motion.div>
+              ))
+            )}
+          </div>
+        )}
+      </div>
+
+       )}
+
+
+
 
           {/* Other tabs remain unchanged */}
           {/* ... Rest of the code for other tabs ... */}
