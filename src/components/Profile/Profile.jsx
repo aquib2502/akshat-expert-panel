@@ -38,7 +38,7 @@ export default function Profile() {
     specialization: "",
     address: "",
     gender: "",
-    profilePic: null,
+    profilePic: "",
   });
   const [previewPic, setPreviewPic] = useState(null);
 
@@ -65,7 +65,7 @@ export default function Profile() {
           specialization: response.data.expert.specialization,
           address: response.data.expert.address || "",
           gender: response.data.expert.gender || "Male",
-          profilePic: response.data.expert.profilePic,
+          profilePic: response.data.expert.profilePic || "/default.png",
         });
       } else {
         setMessage("Failed to load expert data.");
